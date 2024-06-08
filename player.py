@@ -18,6 +18,7 @@
 
 from math import copysign
 
+import pygame
 from pygame.event import Event
 from pygame.locals import KEYDOWN, KEYUP, K_LEFT, K_RIGHT
 from pygame.math import Vector2
@@ -44,9 +45,10 @@ class Player(Sprite, Singleton):
     """
 
     # (Overriding Sprite.__init__ constructor)
-    def __init__(self, *args):
+    def __init__(self, game, *args):
         # calling default Sprite constructor
         Sprite.__init__(self, *args)
+        self.game = game  # ref to game
         self.__startrect = self.rect.copy()
         self.__maxvelocity = Vector2(config.PLAYER_MAX_SPEED, 100)
         self.__startspeed = 1.5
@@ -60,6 +62,14 @@ class Player(Sprite, Singleton):
         self.accel = .5
         self.deccel = .6
         self.dead = False
+
+        # Load player image
+        self._image = pygame.image.load('images/DOG.png').convert_alpha()
+        self.rect = self._image.get_rect(topleft=(self.rect.x, self.rect.y))
+        self.camera_rect = self.rect.copy()
+
+        # Load sound
+        self.jump_sound = pygame.mixer.Sound('sounds/jump.ogg')
 
     def _fix_velocity(self) -> None:
         """ Set player's velocity between max/min.
@@ -99,12 +109,14 @@ class Player(Sprite, Singleton):
     def jump(self, force: float = None) -> None:
         if not force: force = self._jumpforce
         self._velocity.y = -force
+        if self.game.sound_on:
+            self.jump_sound.play()
 
     def onCollide(self, obj: Sprite) -> None:
         self.rect.bottom = obj.rect.top
         self.jump()
 
-    def collisions(self) -> None:
+    def collisions(self, game_instance) -> None:
         """ Checks for collisions with level.
         Should be called in Player.update().
         """
@@ -124,7 +136,12 @@ class Player(Sprite, Singleton):
                     self.onCollide(platform)
                     platform.onCollide()
 
-    def update(self) -> None:
+        # Check red squares collisions
+        for square in game_instance.squares:
+            if square['spawned'] and self.rect.colliderect(square['rect']):
+                self.dead = True
+
+    def update(self, game_instance) -> None:
         """ For position and velocity updates.
         Should be called each frame.
         """
@@ -145,4 +162,4 @@ class Player(Sprite, Singleton):
         self.rect.x = (self.rect.x + self._velocity.x) % (config.XWIN - self.rect.width)
         self.rect.y += self._velocity.y
 
-        self.collisions()
+        self.collisions(game_instance)

@@ -18,6 +18,7 @@ GRAY = (100, 100, 100)
 LIGHT_GREEN = (131, 252, 107)
 ANDROID_GREEN = (164, 198, 57)
 FOREST_GREEN = (87, 189, 68)
+RED = (255, 0, 0)
 
 # Player
 PLAYER_SIZE = (25, 35)
@@ -39,3 +40,6 @@ BREAKABLE_PLATFORM_CHANCE = 12
 # Fonts
 LARGE_FONT = SysFont("", 128)
 SMALL_FONT = SysFont("arial", 24)
+
+# Configurable square speed
+RED_SQUARE_SPEED = 5
