@@ -19,4 +19,3 @@ __pycache__
 
 # packaging
 dist/
-build/
