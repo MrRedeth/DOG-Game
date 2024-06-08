@@ -1,0 +1,22 @@
+# Python
+__pycache__
+
+# virtualenv
+.venv
+
+# mypy
+.mypy_cache/
+
+# PyCharm
+.idea/
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# packaging
+dist/
+build/
