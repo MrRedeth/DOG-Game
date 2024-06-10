@@ -82,7 +82,7 @@ class Game(Singleton):
         self.gameover_txt = config.LARGE_FONT.render("Game Over", 1, config.GRAY)
         self.gameover_rect = self.gameover_txt.get_rect(center=(config.HALF_XWIN, config.HALF_YWIN))
 
-        self.win_txt = config.LARGE_FONT.render("Win", 1, config.GRAY)
+        self.win_txt = config.LARGE_FONT.render("1 DOG = 1 $", 1, config.GRAY)
         self.win_rect = self.win_txt.get_rect(center=(config.HALF_XWIN, config.HALF_YWIN))
 
         # Red squares
@@ -132,7 +132,7 @@ class Game(Singleton):
             {
                 'rect': pygame.Rect(config.HALF_XWIN - 25, -100, 50, 50),
                 'speed': 5,
-                'score': 100_000_000_000,
+                'score': 99_000_000_000,
                 'spawned': False,
                 'image': pygame.image.load('images/MOON.png')
             }
@@ -209,7 +209,7 @@ class Game(Singleton):
                     if square['rect'].right >= config.XWIN or square['rect'].left <= 0:
                         square['speed'] = -square['speed']
 
-            if self.score >= 100_000_000_000:
+            if self.score >= 100_000_000_001:
                 self.won = True
                 if self.sound_on:
                     self.win_sound.play()
